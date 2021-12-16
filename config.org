@@ -1,0 +1,79 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Tim Julian Wörner
+
+* Basics
+
+** Package Management
+    First, adding in the MELPA repository:
+    #+begin_src emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+    #+end_src
+
+    Making sure that =use-package= is loaded:
+    #+begin_src emacs-lisp
+(when (not (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
+    #+end_src
+
+** Backup File Management
+   I don't really like my directories to be cluttered with a lot of backup files, so I am using the =.saves=-folder within my home directory to store them.
+   #+begin_src emacs-lisp
+(setq backup-directory-alist `(("." . "~/.saves")))
+   #+end_src
+
+** Miscellaneous
+   Disabling the Emacs welcome screen on startup. This sets the default startup buffer to =*scratch*=.
+   #+begin_src emacs-lisp
+(setq inhibit-startup-screen t)
+   #+end_src
+
+   The following command disables the Emacs toolbar.
+   #+begin_src emacs-lisp
+(tool-bar-mode -1)
+   #+end_src
+
+   Disabling the "beep" sound entirely:
+   #+begin_src emacs-lisp
+(setq ring-bell-function 'ignore)
+   #+end_src
+
+* Theme
+  Use the =adwaita= color scheme:
+  #+begin_src emacs-lisp
+(load-theme 'adwaita)
+  #+end_src
+
+* Magit
+  The following command updates the Magit status buffer automatically as soon as a buffer inside the respective repository is saved.
+  #+begin_src emacs-lisp
+(with-eval-after-load 'magit-mode
+  (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
+  #+end_src
+
+* Org-Mode
+
+** Formatting
+   Preserve leading whitespace characters.
+   This prevents messed up whitespace at the beginning of lines within a code block.
+   #+begin_src emacs-lisp
+(setq org-src-preserve-indentation t)
+   #+end_src
+
+** Babel
+   Enable support for the various languages which can be executed from Org-mode.
+   #+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((racket . t)))
+   #+end_src
+
+   I am using a third-party implementation for Racket in =org-babel= which can be found on GitHub: [[https://github.com/togakangaroo/ob-racket]]
+
+   For this to work, the configuration file must be added to the =load-path=:
+   #+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/packages/")
+(require 'ob-racket)
+   #+end_src
