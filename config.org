@@ -3,7 +3,7 @@
 
 * Basics
 
-** Package Management
+<** Package Management
     First, adding in the MELPA repository:
     #+begin_src emacs-lisp
 (require 'package)
@@ -63,17 +63,20 @@
    #+end_src
 
 ** Babel
-   Enable support for the various languages which can be executed from Org-mode.
+   
+   I am using a third-party implementation for Racket in =org-babel=
+   which can be found on GitHub:
+   [[https://github.com/togakangaroo/ob-racket]] For this to work, the
+   configuration file must be added to the =load-path=:
+   #+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/packages/")
+(require 'ob-racket)
+   #+end_src
+
+   Enable support for Racket to be executed from Org-mode.
    #+begin_src emacs-lisp
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((racket . t)))
    #+end_src
 
-   I am using a third-party implementation for Racket in =org-babel= which can be found on GitHub: [[https://github.com/togakangaroo/ob-racket]]
-
-   For this to work, the configuration file must be added to the =load-path=:
-   #+begin_src emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/packages/")
-(require 'ob-racket)
-   #+end_src
