@@ -3,7 +3,7 @@
 
 * Basics
 
-<** Package Management
+** Package Management
     First, adding in the MELPA repository:
     #+begin_src emacs-lisp
 (require 'package)
@@ -19,13 +19,16 @@
     #+end_src
 
 ** Backup File Management
-   I don't really like my directories to be cluttered with a lot of backup files, so I am using the =.saves=-folder within my home directory to store them.
+   I don't really like my directories to be cluttered with a lot of
+   backup files, so I am using the =.saves=-folder within my home
+   directory to store them.
    #+begin_src emacs-lisp
 (setq backup-directory-alist `(("." . "~/.saves")))
    #+end_src
 
 ** Miscellaneous
-   Disabling the Emacs welcome screen on startup. This sets the default startup buffer to =*scratch*=.
+   Disabling the Emacs welcome screen on startup. This sets the
+   default startup buffer to =*scratch*=.
    #+begin_src emacs-lisp
 (setq inhibit-startup-screen t)
    #+end_src
@@ -40,6 +43,11 @@
 (setq ring-bell-function 'ignore)
    #+end_src
 
+   Enabling visualization of matching parentheses:
+   #+begin_src emacs-lisp
+(show-paren-mode 1)
+   #+end_src
+
 * Theme
   Use the =adwaita= color scheme:
   #+begin_src emacs-lisp
@@ -47,7 +55,8 @@
   #+end_src
 
 * Magit
-  The following command updates the Magit status buffer automatically as soon as a buffer inside the respective repository is saved.
+  The following command updates the Magit status buffer automatically
+  as soon as a buffer inside the respective repository is saved.
   #+begin_src emacs-lisp
 (with-eval-after-load 'magit-mode
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
@@ -55,9 +64,46 @@
 
 * Org-Mode
 
+** Org Capture Templates
+   I am using Org-Mode for writing my website using the =hugo= static
+   website generator.  This is a simple template for different types
+   of posts (currently only SICP exercises).  This takes as its input
+   the SICP chapter and exercise numbers, and then sets up the caption
+   and metadata automatically.
+
+   First, some variables to hold the SICP chapter and exercise numbers
+   as well as the current date in the correct format, then our capture
+   templates.  I am using a wrapper function for =org-capture= so that
+   the variables can be set on every function call.
+   
+   #+begin_src emacs-lisp
+(defun my/org-capture-hugo ()
+  "org-capture override for SICP blog posts"
+  (interactive)
+  (setq org-capture-sicp-chapter (read-string "SICP chapter number: "))
+  (setq org-capture-sicp-exercise (read-string "SICP exercise number: "))
+  (setq org-capture-sicp-current-date (format-time-string "%Y-%m-%d"))
+  (setq org-capture-templates
+        `(("s" "SICP" entry (file+headline
+			     "~/Documents/homepage/posts.org"
+			     ,(format "SICP Series Part %s" org-capture-sicp-chapter))
+	   ,(format "** SICP Exercise %s.%s :@sicp:\n\
+   :PROPERTIES:\n\
+   :EXPORT_DATE: %s\n\
+   :EXPORT_FILE_NAME: %s\n\
+   :END:\n\
+****\  Question\n\
+****\  Answer\n"
+		    org-capture-sicp-chapter
+		    org-capture-sicp-exercise
+		    org-capture-sicp-current-date
+		    org-capture-sicp-exercise))))
+  (org-capture))
+   #+end_src
+
 ** Formatting
-   Preserve leading whitespace characters.
-   This prevents messed up whitespace at the beginning of lines within a code block.
+   Preserve leading whitespace characters.  This prevents messed up
+   whitespace at the beginning of lines within a code block.
    #+begin_src emacs-lisp
 (setq org-src-preserve-indentation t)
    #+end_src
