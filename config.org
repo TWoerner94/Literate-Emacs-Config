@@ -27,12 +27,6 @@
    #+end_src
 
 ** Miscellaneous
-   Disabling the Emacs welcome screen on startup. This sets the
-   default startup buffer to =*scratch*=.
-   #+begin_src emacs-lisp
-(setq inhibit-startup-screen t)
-   #+end_src
-
    The following command disables the Emacs toolbar.
    #+begin_src emacs-lisp
 (tool-bar-mode -1)
