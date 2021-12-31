@@ -108,6 +108,15 @@
 (setq org-src-preserve-indentation t)
    #+end_src
 
+   Setting up =autofill= for all Org-Mode files.  This automatically
+   wraps lines within a paragraph to not surpass a certain maximum
+   number of columns. The default number of maximum columns in Emacs
+   is 70, but I prefer 80.
+   #+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
+(setq-default fill-column 80)
+   #+end_src
+
 ** Babel
    
    I am using a third-party implementation for Racket in =org-babel=
