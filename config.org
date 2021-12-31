@@ -8,6 +8,7 @@
     #+begin_src emacs-lisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
 (package-initialize)
     #+end_src
 
@@ -122,10 +123,45 @@
 (require 'ob-racket)
    #+end_src
 
-   Enable support for Racket to be executed from Org-mode.
+   Enable support for various languages to be executed from Org-mode.
    #+begin_src emacs-lisp
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((racket . t)))
+ '((racket . t)
+   (js . t)
+   (java . t)))
+   #+end_src
+
+** Screenshots
+This allows copying screenshots in from the clipboard:
+#+begin_src emacs-lisp
+(require 'org-download)
+#+end_src
+
+* Modes
+Rebinding the =outline-minor-mode-prefix= from the clumsy default keybinding of
+=C-c @= to the much easier =C-c C-o=:
+#+begin_src emacs-lisp
+(setq outline-minor-mode-prefix "\C-c\C-o")
+#+end_src
+
+* Packages
+
+** AUCTeX
+
+  AUCTeX is an environment for text typesetting using LaTeX.
+
+  Enable document parsing:
+  #+begin_src emacs-lisp
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+  #+end_src
+
+** Ivy
+
+   Ivy is a useful framework for autocompletion.  The following command enables
+   Ivy everywhere:
+   #+begin_src emacs-lisp
+(ivy-mode 1)
    #+end_src
 
