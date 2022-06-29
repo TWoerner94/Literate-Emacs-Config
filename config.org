@@ -157,6 +157,12 @@ Rebinding the =outline-minor-mode-prefix= from the clumsy default keybinding of
 (setq TeX-parse-self t)
   #+end_src
 
+  Adding a hook to enable =outline-minor-mode= as soon as =latex-mode= is
+  started:
+  #+begin_src emacs-lisp
+(add-hook 'LaTeX-mode-hook #'outline-minor-mode)
+  #+end_src
+
 ** Ivy
 
    Ivy is a useful framework for autocompletion.  The following command enables
