@@ -142,7 +142,9 @@ This allows copying screenshots in from the clipboard:
 Rebinding the =outline-minor-mode-prefix= from the clumsy default keybinding of
 =C-c @= to the much easier =C-c C-o=:
 #+begin_src emacs-lisp
-(setq outline-minor-mode-prefix "\C-c\C-o")
+(add-hook 'outline-minor-mode-hook
+	  (lambda () (local-set-key "\C-c\C-o"
+				    outline-mode-prefix-map)))
 #+end_src
 
 * Packages
